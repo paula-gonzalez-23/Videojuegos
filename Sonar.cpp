@@ -3,12 +3,13 @@
 #include <stdlib.h>
 #include <vector>
 #include <math.h>
+#include <list>
 using namespace std;
 
 class Sonar{
 
     public:
-    int ANCHO = 60, ALTO = 15, random, numCofres = 3, coorX,coorY;
+    int ANCHO = 60, ALTO = 15, random, numCofres = 3, coorX,coorY, dispositivos = 20;;
     string tab1 [60][15] = {};
     
 
@@ -166,9 +167,54 @@ class Sonar{
 
     void jugar(){
 
-        cout << "S O N A R! " << endl << "Busca los tesoros ocultos en el fondo del océano usando sondas sonar." << endl;
-        
+        cout << "S O N A R! " << endl << "Busca los tesoros ocultos en el fondo del océano usando sondas sonar." << endl;        
         cout << "Para dejar caer un sonar, ingresa las coordenadas \'x\' y \'y\'. El sonar puede detectar la distancia"  << endl;
+        cout << "hasta el tesoro más cercano. Cuando encuentres un tesoro, intenta dejar caer el sonar en esa ubicación." << endl;
+        cout << endl;
 
-    }
+        while (true){
+            
+            crearTablero(ANCHO,ALTO, tab1);
+            imprimirTablero(tab1);
+            vector <int> cofres1 = cofres(numCofres);
+            vector <int> movimiento1 = movimientos();
+            list <string> movHechos;
+            while (dispositivos > 0)
+            {
+                cout << "Sondas sonar restantes: " + to_string(dispositivos) + " Sondas sonar restantes: " + to_string(numCofres) << endl;
+                movimientos();
+
+
+                if(hacerMovimientos(cofres1,movimiento1 [1],movimiento1 [2]  ) == ""){
+                    continue;   
+                }
+                else{
+                    if(hacerMovimientos(cofres1,movimiento1 [1],movimiento1 [2]  ) == "Has encontrado un tesoro"){
+                        for (int i = 0; i < movHechos.size(); i++)
+                        {
+                           hacerMovimientos(cofres1,movimiento1 [1],movimiento1 [2]); 
+                        }
+                    }
+
+
+                    imprimirTablero(tab1);
+                    hacerMovimientos(cofres1,movimiento1 [1],movimiento1 [2]);
+                    
+                }
+                if( (cofres(3)).size() == 0){
+
+                    cout << "¡Has encontrado todos los tesoros! ¡Felicidades y buen juego!" << endl;
+                    break;
+
+                }
+                dispositivos -= 1;
+            }
+            
+            if(jugarOtra() == 2){
+
+                break;
+            }
+
+        } 
+    }  
 };
