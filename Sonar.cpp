@@ -177,22 +177,22 @@ class Sonar{
             crearTablero(ANCHO,ALTO, tab1);
             imprimirTablero(tab1);
             vector <int> cofres1 = cofres(numCofres);
-            vector <int> movimiento1 = movimientos();
+            
             list <string> movHechos;
             while (dispositivos > 0)
             {
                 cout << "Sondas sonar restantes: " + to_string(dispositivos) + " Sondas sonar restantes: " + to_string(numCofres) << endl;
-                movimientos();
+                vector <int> movimiento1 = movimientos();
 
 
-                if(hacerMovimientos(cofres1,movimiento1 [1],movimiento1 [2]  ) == ""){
+                if(hacerMovimientos(cofres1,movimiento1 [0],movimiento1 [1]  ) == ""){  
                     continue;   
                 }
                 else{
                     if(hacerMovimientos(cofres1,movimiento1 [1],movimiento1 [2]  ) == "Has encontrado un tesoro"){
                         for (int i = 0; i < movHechos.size(); i++)
                         {
-                           hacerMovimientos(cofres1,movimiento1 [1],movimiento1 [2]); 
+                           hacerMovimientos(cofres1,movimiento1 [i],movimiento1 [i+1]); 
                         }
                     }
 
