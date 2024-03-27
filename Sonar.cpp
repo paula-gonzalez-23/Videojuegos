@@ -164,5 +164,11 @@ class Sonar{
         return op;
     }
 
-    
+    void jugar(){
+
+        cout << "S O N A R! " << endl << "Busca los tesoros ocultos en el fondo del océano usando sondas sonar." << endl;
+        
+        cout << "Para dejar caer un sonar, ingresa las coordenadas \'x\' y \'y\'. El sonar puede detectar la distancia"  << endl;
+
+    }
 };
