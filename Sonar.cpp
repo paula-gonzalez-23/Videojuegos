@@ -193,10 +193,11 @@ class Sonar{
                         for (int i = 0; i < movHechos.size(); i++)
                         {
                            hacerMovimientos(cofres1,movimiento1 [i],movimiento1 [i+1]); 
+                           i += 2;
                         }
                     }
 
-                    i += 2;
+                    
                     imprimirTablero(tab1);
                     hacerMovimientos(cofres1,movimiento1 [i],movimiento1 [i+1]);
                     
