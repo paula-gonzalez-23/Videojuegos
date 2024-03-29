@@ -41,7 +41,6 @@ class Sonar{
 
     }
 
-
     void imprimirTablero(string tab1[60][15]){    
 
         string esp = " ", esp1 = "         ", numbers = "012345678901234567890123456789012345678901234567890123456789";
@@ -95,10 +94,10 @@ class Sonar{
 
     string hacerMovimientos(vector <int> coordCofres,int x ,int y){
 
-        int limite = 100, pos = 0;
+        int limite = 100;
         float distancia = 0;
 
-        for(int i = 0; i < 6; i +=2 ){
+        for(int i = 0; i < coordCofres.size(); i +=2 ){
             distancia = sqrt((coordCofres[i]-x) * (coordCofres[i]-x) + (coordCofres[i+1]-y) * (coordCofres[i+1]-y));
 
             if (distancia < limite)
@@ -114,17 +113,16 @@ class Sonar{
 
         if (limite == 0)
         {
-            auto ref = find(coordCofres.begin(), coordCofres.end(), x);
-            coordCofres.erase(ref);
-            auto ref1 = find(coordCofres.begin(), coordCofres.end(), y);
-            coordCofres.erase(ref1);
-            cout << "Encontrate un cofre, Bien hecho." << endl;
+            coordCofres.erase(remove(coordCofres.begin(), coordCofres.end(), x),
+                             remove(coordCofres.begin(), coordCofres.end(), y));
+            tab1 [x][y] = "Ø";
+            numCofres--;
             return "Has encontrado un tesoro";
         }
         else{
             if (limite < 10){
                 tab1[x][y] = to_string(limite);
-                cout << "Has encontrado un tesoro a " + to_string(limite) + "unidades del dispositivo " << endl;
+                cout << "Has encontrado un tesoro a " + to_string(limite) + " unidades del dispositivo " << endl;
             }
             else{
                 tab1[x][y] = "X";
@@ -134,10 +132,11 @@ class Sonar{
         return "";
         
     }
-
+    
     vector <int> movimientos(){
         
         vector <int> movimiento;
+        bool validacion = true;
 
         while (true){        
         
@@ -146,22 +145,20 @@ class Sonar{
 
             cout << "Ingrese una posicion para el eje y: " << endl;
             cin >> coorY;
-
-            if(coorX < 0 || coorX > 60){
+            
+            if(coorX < 0 || coorX > ANCHO){
                 cout << "Ingrese una coordenada valida para el eje x" << endl;
             }
-            if(coorY < 0 || coorY > 15){
+            if(coorY < 0 || coorY > ALTO){
                 cout << "Ingrese una coordenada valida para el eje y" << endl;
             }
-            else{
+            else {
                 movimiento.push_back(coorX);
                 movimiento.push_back(coorY);
                 return movimiento;
             }
-
-
         }
-    }        
+    }
 
     int jugarOtra(){
         int op;
@@ -199,14 +196,16 @@ class Sonar{
 
                 string hacerMovimientos1 = hacerMovimientos(cofres1,movimiento1[i], movimiento1[i+1]);
                 if ( hacerMovimientos1 == "Has encontrado un tesoro"){
-                    numCofres -= 1;
                     
                     for(int i = 0; i < movimiento1.size(); i +=2){
                         
                         hacerMovimientos(cofres1,movimiento1[i], movimiento1[i+1]);
                         
                     }
+                    
+                    
                 }
+                
                 imprimirTablero(tab1);
                 cout << hacerMovimientos1 << endl;
                 
@@ -227,16 +226,3 @@ class Sonar{
         } 
     }  
 };
-
-int main(){
-    
-    Sonar user1;
-    
-    user1.jugar();
-    
-    
-    return 0;
-    
-    
-    
-}
