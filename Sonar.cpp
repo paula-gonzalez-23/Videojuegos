@@ -188,22 +188,14 @@ class Sonar{
             {
                 cout << "Sondas sonar restantes: " + to_string(dispositivos) + " Cofres restantes: " + to_string(numCofres) << endl;
                 vector <int> movimiento1 = movimientos();
-                cout << "==============================" << endl;
-                for(int c = 0; c < 6; c+=2){
-                    cout << cofres1[c] << "/"<< cofres1[c+1]<< endl;
-                }
                 
-
                 string hacerMovimientos1 = hacerMovimientos(cofres1,movimiento1[i], movimiento1[i+1]);
-                if ( hacerMovimientos1 == "Has encontrado un tesoro"){
-                    
+                if ( hacerMovimientos1 == "Has encontrado un tesoro"){                    
                     for(int i = 0; i < movimiento1.size(); i +=2){
                         
                         hacerMovimientos(cofres1,movimiento1[i], movimiento1[i+1]);
                         
                     }
-                    
-                    
                 }
                 
                 imprimirTablero(tab1);
