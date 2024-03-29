@@ -79,7 +79,7 @@ class Sonar{
         vector <int> coordCofres;
         int coordX, coordY;
 
-        for(int i = 0; i < 2*numCofres; i++){
+        for(int i = 0; i < 6; i++){
             coordX = rand() %60;
             coordY = rand() %15;
 
@@ -177,11 +177,14 @@ class Sonar{
             crearTablero(ANCHO,ALTO, tab1);
             imprimirTablero(tab1);
             vector <int> cofres1 = cofres(numCofres);
+            for(int c = 0; c < 6; c++){
+                cout << cofres1[c] << endl;
+            }
             int i = 0;
             list <string> movHechos;
             while (dispositivos > 0)
             {
-                cout << "Sondas sonar restantes: " + to_string(dispositivos) + " Sondas sonar restantes: " + to_string(numCofres) << endl;
+                cout << "Sondas sonar restantes: " + to_string(dispositivos) + " Cofres restantes: " + to_string(numCofres) << endl;
                 vector <int> movimiento1 = movimientos();
 
 
@@ -202,7 +205,7 @@ class Sonar{
                     hacerMovimientos(cofres1,movimiento1 [i],movimiento1 [i+1]);
                     
                 }
-                if( (cofres(3)).size() == 0){
+                if(cofres1.size() == 0){
 
                     cout << "¡Has encontrado todos los tesoros! ¡Felicidades y buen juego!" << endl;
                     break;
@@ -219,3 +222,16 @@ class Sonar{
         } 
     }  
 };
+
+int main(){
+    
+    Sonar user1;
+    
+    user1.jugar();
+    
+    
+    return 0;
+    
+    
+    
+}
