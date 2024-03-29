@@ -3,7 +3,8 @@
 #include <stdlib.h>
 #include <vector>
 #include <math.h>
-#include <list>
+#include <algorithm>
+
 using namespace std;
 
 class Sonar{
@@ -78,10 +79,12 @@ class Sonar{
     vector <int> cofres(int numCofres){
         vector <int> coordCofres;
         int coordX, coordY;
+        srand(time(NULL));
 
         for(int i = 0; i < 6; i++){
             coordX = rand() %60;
             coordY = rand() %15;
+            
 
             coordCofres.push_back(coordX);
             coordCofres.push_back(coordY);
@@ -95,7 +98,7 @@ class Sonar{
         int limite = 100, pos = 0;
         float distancia = 0;
 
-        for(int i = 1; i < 6; i +=2 ){
+        for(int i = 0; i < 6; i +=2 ){
             distancia = sqrt((coordCofres[i]-x) * (coordCofres[i]-x) + (coordCofres[i+1]-y) * (coordCofres[i+1]-y));
 
             if (distancia < limite)
@@ -104,24 +107,28 @@ class Sonar{
             }
     
         }
-
         
         limite = round(limite);
+        
+
 
         if (limite == 0)
-        {// posible cambio 
-            coordCofres.erase(coordCofres.begin() + x);
-            coordCofres.erase(coordCofres.begin() + y);
+        {
+            auto ref = find(coordCofres.begin(), coordCofres.end(), x);
+            coordCofres.erase(ref);
+            auto ref1 = find(coordCofres.begin(), coordCofres.end(), y);
+            coordCofres.erase(ref1);
+            cout << "Encontrate un cofre, Bien hecho." << endl;
             return "Has encontrado un tesoro";
         }
         else{
             if (limite < 10){
                 tab1[x][y] = to_string(limite);
-                return "Has encontrado un tesoro a " + to_string(limite) + "unidades del dispositivo ";
+                cout << "Has encontrado un tesoro a " + to_string(limite) + "unidades del dispositivo " << endl;
             }
             else{
                 tab1[x][y] = "X";
-                return "No has encontrado ningun cofre cerca del sonar";
+                cout << "No has encontrado ningun cofre cerca del sonar" << endl;
             }
         }
         return "";
@@ -177,35 +184,33 @@ class Sonar{
             crearTablero(ANCHO,ALTO, tab1);
             imprimirTablero(tab1);
             vector <int> cofres1 = cofres(numCofres);
-            for(int c = 0; c < 6; c++){
-                cout << cofres1[c] << endl;
-            }
+            
             int i = 0;
-            list <string> movHechos;
+            
             while (dispositivos > 0)
             {
                 cout << "Sondas sonar restantes: " + to_string(dispositivos) + " Cofres restantes: " + to_string(numCofres) << endl;
                 vector <int> movimiento1 = movimientos();
-
-
-                if(hacerMovimientos(cofres1,movimiento1 [i],movimiento1 [i+1]  ) == ""){  
-                    continue;   
-                } 
-                else{
-                    if(hacerMovimientos(cofres1,movimiento1 [i],movimiento1 [i+1]) == "Has encontrado un tesoro"){
-                        for (int i = 0; i < movHechos.size(); i++)
-                        {
-                           hacerMovimientos(cofres1,movimiento1 [i],movimiento1 [i+1]); 
-                           i += 2;
-                        }
-                    }
-
-                    
-                    imprimirTablero(tab1);
-                    hacerMovimientos(cofres1,movimiento1 [i],movimiento1 [i+1]);
-                    
+                cout << "==============================" << endl;
+                for(int c = 0; c < 6; c+=2){
+                    cout << cofres1[c] << "/"<< cofres1[c+1]<< endl;
                 }
-                if(cofres1.size() == 0){
+                
+
+                string hacerMovimientos1 = hacerMovimientos(cofres1,movimiento1[i], movimiento1[i+1]);
+                if ( hacerMovimientos1 == "Has encontrado un tesoro"){
+                    numCofres -= 1;
+                    
+                    for(int i = 0; i < movimiento1.size(); i +=2){
+                        
+                        hacerMovimientos(cofres1,movimiento1[i], movimiento1[i+1]);
+                        
+                    }
+                }
+                imprimirTablero(tab1);
+                cout << hacerMovimientos1 << endl;
+                
+                if(numCofres == 0){
 
                     cout << "¡Has encontrado todos los tesoros! ¡Felicidades y buen juego!" << endl;
                     break;
@@ -215,7 +220,7 @@ class Sonar{
             }
             
             if(jugarOtra() == 2){
-
+                cout << "Gracias por jugar" << endl;
                 break;
             }
 
