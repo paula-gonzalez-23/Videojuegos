@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <random>
+#include "Videojuegos.cpp"
 using namespace std;
 
 class Ahorcado {
@@ -183,12 +184,3 @@ class Ahorcado {
       }
     }
 };
-
-int main () {
-
-  Ahorcado user;
-
-  user.jugar();
-
-  return 0;
-}
