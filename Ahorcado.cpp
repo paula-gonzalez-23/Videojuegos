@@ -184,3 +184,17 @@ class Ahorcado {
       }
     }
 };
+
+int main (){
+
+  Ahorcado user1;
+  videojuegos user;
+
+  user.iniciarJuego();
+  user1.jugar();
+  user.finjuego();
+
+  cout << "tiempo jugado: " << user.gettiempoJugado() << endl;
+
+  return 0;
+}
