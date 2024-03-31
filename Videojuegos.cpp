@@ -1,5 +1,6 @@
 #include <iostream>
 #include <vector>
+#include <list>
 using namespace std;
 
 class Videojuegos {
@@ -14,6 +15,8 @@ class Videojuegos {
     vector<string> categorias;
     int tiempoJugado; 
     time_t startGame; //Tiempo de inicio del juego
+
+    list<string>juegoFavorito;
 
     public:
 
@@ -91,6 +94,16 @@ class Videojuegos {
         return tiempoJugado;
     }
 
+    void agregarListaFavoritos(const string& videojuego){
+
+        juegoFavorito.push_back(videojuego);
+    }
+    
+    const list<string>& getjuegoFavorito() const {
+
+        return juegoFavorito;
+    }
+
     void verInfo(string juego) {
 
         cout << "Nombre: " << nombre << endl;
@@ -134,10 +147,6 @@ class Videojuegos {
         cout << "4.Agregar un juego a la lista de favoritos" << endl;
         cout << "5.Mostrar la lista de favoritos" << endl;
         cout << "6.Lista videojuegos por ordenamientos" << endl;
-        /*cout << "6.Consultar y mostrar la lista de videojuegos ordenados por titulo" << endl;
-        cout << "7.Consultar y mostrar la lista de videojuegos ordenados por anio de lanzamiento" << endl;
-        cout << "8.Consultar y mostrar la lista de videojuegos filtrados por una plataforma especifica" << endl;
-        cout << "9.Consultar y mostrar la lista de videojuegos ordenados por categoria y desarrollador" << endl;*/
         cout << "7.Ordenar por videojuegos mas jugados, con los tiempos c/u y nombre del jugaodr" << endl;
         cout << "8.Salir" << endl;
     }
@@ -156,73 +165,97 @@ class Videojuegos {
         }
     }
 
-    void agregarVideojuego(){
+    void agregarJuego(Multilista<string, string>& multilista){
 
-        Videojuegos newGame;
-
-        string nombre;
-        string desarrollador;
-        string plataforma;
-        int anioLanzamiento;
-        int cantidadJugadores;
-        int cantidadCategorias;
-        vector<string> categorias;
-
-        cout << "Ingrese el nombre del juego: " << endl;
-        cin >> nombre;
-        cout << "Ingrese el desarrollador del juego: " << endl;
-        cin >> desarrollador;
-        cout << "Ingrese la plataforma donde se juega normalmente: " << endl;
-        cin >> plataforma;
-        cout << "Ingrese la cantidad de jugadores: " << endl;
-        cin >> cantidadJugadores;
-        cout << "Ingrese el anio de lanzamiento del juego: " << endl;
-        cin >> anioLanzamiento;
-        cout << "Ingrese la cantidad de categorias: " << endl;
-        cin >> cantidadCategorias;
-        cout << "Ingrese las categorias (separadas por espacio): " << endl;
-        for (int i = 0; i < cantidadCategorias; i++){
-            string categoria;
-            cin >> categoria;
-            categorias.push_back(categoria);
-        }
-
-        newGame.setnombre(nombre);
-        newGame.setdesarrollador(desarrollador);
-        newGame.setanioLanzamiento(anioLanzamiento);
-        newGame.setplataforma(plataforma);
-        newGame.setcantidadJugadores(cantidadJugadores);
-        newGame.setCategorias(categorias);
-
-        //listavideosjuegos.push_back(newGame);
-    }
-
-    void agregarCategorias(){
-
+        int opcion;
         string juego;
-        int cantidadCategorias;
-        
-        cout << "Ingrese el nombre del juego al que desea agregar categorias: " << endl;
+
+        cout << "Seleccione a que genero de juego desea agregar el nuevo juego: " << endl;
+        multilista.print();
+
+        cin >> opcion;
+        opcion --;
+
+        cout << "Ingrese el nombre del nuevo juego: " << endl;
         cin >> juego;
 
-        if (juego == nombre){
-            cout << "Ingrese la cantidad de categorias a agregar: " << endl;
-            cin >> cantidadCategorias;
-            cout << "Ingrese las categorias a agregar (separadas por espacio): " << endl;
-            for (int i = 0; i < cantidadCategorias; i++){
-                string categoria;
-                cin >> categoria;
-                categorias.push_back(categoria);
-            }
+        multilista.get(opcion)->add(juego);
 
-            cout << "Categorias agregadas exitosamente al juego" << juego << endl;
-        } else {
+    }
 
-            cout << "El juego especificado no se encuentra en la lista" << endl;
+    void agregarCategoria(Multilista<string, string>& multilista){
+
+        int genero, juego, cantidadCategorias;
+        string categoria;
+
+        cout << "Seleccione el genero del juego al que desea agregar categorias: " << endl;
+        multilista.print();
+        cin >> genero;
+        genero --;
+
+        cout << "Seleccione el juego al que desea agregar categorias: " << endl;
+        multilista.get(genero)->print();
+        cin >> juego;
+        juego --;
+
+        cout << "Ingrese la cantidad de categorias que desea agregar: " << endl;
+        cin >> cantidadCategorias;
+
+        cout << "Ingrese las cantegorias (una por una): " << endl;
+        for (int i = 0; i < cantidadCategorias; i++){
+            cin >> categoria;
+            multilista.get(genero)->get_lista()->insert(categoria,juego);
         }
     }
 
-    
+    void agregarListaFavoritos(){
+
+        string juego;
+
+        cout << "Ingrese el nombre del juego que desea agregar a su lista de favoritos (0 para salir): " << endl;
+        
+
+        while (true){
+            cin >> juego;
+
+            if(juego == "0"){
+                break;
+            }
+
+            juegoFavorito.push_back(juego);
+        }
+    }
+
+    void mostrarListaFavoritos(){
+
+        cout << "La lista de juegos favoritos es: " << endl;
+        for (const auto& videojuego : juegoFavorito){
+            cout << videojuego << ", ";
+        }
+
+        cout << endl;
+
+    }
+
+    void ordenadosPorTitulo(Multilista<string, Videojuegos>& multilista){
+
+        Lista<string> nombresJuegos;
+        NodoP<string, Videojuegos>* nodo = multilista.get(0);
+        while (nodo != nullptr){
+            nombreJuegos.add(nodo->get_dato());
+            nodo = nodo->get_next();
+        }
+
+        nombresJuegos.sort();
+
+        Nodo<string>* nombreJuego = nombresJuegos.get_head();
+        while (nombreJuego != nullptr){
+            NodoP<string, Videojuegos>* nodoJuego = multilista.get(0);
+            while (nodoJuego != nullptr){
+                if 
+            }
+        }
+    }
 
 
     

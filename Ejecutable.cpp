@@ -5,7 +5,7 @@ using namespace std;
 
 int main (){
 
-    int opcion, opcion1;
+    int opcion, opcion1, opcion3;
 
     Videojuegos user;
     Ahorcado user1;
@@ -52,12 +52,43 @@ int main (){
             
             case 2:
 
-                user.agregarVideojuego();
-                cout << "El juego se ha agregado con exito" << endl;
+                user.agregarJuego();
                 break;
             
             case 3:
+
+                user.agregarCategoria();
+                break;
             
+            case 4:
+
+                user.agregarListaFavoritos();
+                break;
+            
+            case 5:
+
+                user.mostrarListaFavoritos();
+                break;
+            
+            case 6:
+
+                cout << "Elija porque quiere consultar y mostrar la lista de juegos: " << endl;
+                cout << "1.Ordenados por titulo" << endl;
+                cout << "2.Ordenados por anio de Lanzamiento" << endl;
+                cout << "3.Filtrados por una plataforma espeifica" << endl;
+                cin >> opcion3;
+
+                switch(opcion3){
+                    case 1:
+                        cout << "Lista de videojuegos ordenados por titulo" << endl;
+                        
+                }
+
+
+
+
+
+
 
 
 
