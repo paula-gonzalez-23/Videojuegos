@@ -192,7 +192,7 @@ int main (){
 
   user.iniciarJuego();
   user1.jugar();
-  user.finjuego();
+  user.finJuego();
 
   cout << "tiempo jugado: " << user.gettiempoJugado() << endl;
 
