@@ -1,6 +1,7 @@
 #include <iostream>
 #include "Videojuegos.cpp"
 #include "Ahorcado.cpp"
+#include "Sonar.cpp"
 using namespace std;
 
 int main (){
@@ -10,6 +11,7 @@ int main (){
 
     Videojuegos user;
     Ahorcado user1;
+    Sonar user2;
 
     do {
 
@@ -39,7 +41,7 @@ int main (){
                     case 2:
                         user.verInfo("Sonar");
                         user.iniciarJuego();
-                        //llamar la funcion del juego sonar
+                        user2.jugar();
                         user.finJuego();
                         cout << "Tiempo jugado: " << user.gettiempoJugado() << "segundos" << endl;
                         break;
