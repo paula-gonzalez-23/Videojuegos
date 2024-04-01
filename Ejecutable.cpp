@@ -13,6 +13,10 @@ int main (){
     Ahorcado user1;
     Sonar user2;
 
+    Multilista<string, Videojuegos> multilista;
+    Multilista<int, Videojuegos> multilista1;
+    Multilista<string, string> multilista2;
+
     do {
 
         user.menu();
@@ -32,18 +36,18 @@ int main (){
                 switch(opcion1){
                     case 1: 
                         user.verInfo("Ahorcado");
-                        user.iniciarJuego();
+                        user.iniciarJuego("Ahorcado", "Paula");
                         user1.jugar();
                         user.finJuego();
-                        cout << "Tiempo jugado: " << user.gettiempoJugado() << "segundos" << endl;
+                        cout << "Tiempo jugado: " << user.gettiempoJugadoSegundos() << "segundos" << endl;
                         break;
                     
                     case 2:
                         user.verInfo("Sonar");
-                        user.iniciarJuego();
+                        user.iniciarJuego("Sonar", "Paula");
                         user2.jugar();
                         user.finJuego();
-                        cout << "Tiempo jugado: " << user.gettiempoJugado() << "segundos" << endl;
+                        cout << "Tiempo jugado: " << user.gettiempoJugadoSegundos() << "segundos" << endl;
                         break;
                     
                     default:
@@ -55,12 +59,12 @@ int main (){
             
             case 2:
 
-                user.agregarJuego();
+                user.agregarJuego(multilista2);
                 break;
             
             case 3:
 
-                user.agregarCategoria();
+                user.agregarCategoria(multilista2);
                 break;
             
             case 4:
@@ -92,7 +96,7 @@ int main (){
                     case 2:
                     
                         cout << "Lista de videojuegos ordenados por anio de lanzamiento" << endl;
-                        user.ordenadosPorAnioLanzamiento(multilista);
+                        user.ordenadosPorAnioLanzamiento(multilista1);
                         break;
                     
                     case 3:
@@ -108,7 +112,7 @@ int main (){
 
                         cout << "Opcion no valida" << endl;
                         break;
-                
+                }
                 break;
             
             case 7:
@@ -154,5 +158,6 @@ int main (){
     } while (opcion != 8);
 
 
+    
     return 0;
 }

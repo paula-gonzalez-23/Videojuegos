@@ -44,9 +44,11 @@ public:
 		return *this;
 	}
 	
-	string to_string() {
-		return dato;
-	}
+	static string to_string(const T& dato){
+        stringstream ss;
+        ss << dato;
+        return ss.str();
+    }
 
 	friend std::ostream& operator<<(std::ostream& os, Nodo<T>& b) {
 		return os << b.to_string();
@@ -320,13 +322,13 @@ public:
 struct RegistroJuego {
 
     string nombreJuego, nombreJugador;
-    int tiempoJugado;
+    int tiempoJugadoSegundos;
 
-    RegistroJuego(string _nombreJuego, string _nombreJugador, int _tiempoJugado){
+    RegistroJuego(string _nombreJuego, string _nombreJugador, int _tiempoJugadoSegundos){
 
         nombreJuego = _nombreJuego;
         nombreJugador = _nombreJugador;
-        tiempoJugado = _tiempoJugado;
+        tiempoJugadoSegundos = _tiempoJugadoSegundos;
     }
 };
 
@@ -340,7 +342,7 @@ class Videojuegos {
     string plataforma;
     int cantidadJugadores;
     vector<string> categorias;
-    int tiempoJugado; 
+    int tiempoJugadoSegundos; 
     time_t startGame; //Tiempo de inicio del juego
 
     list<string>juegoFavorito;
@@ -415,14 +417,14 @@ class Videojuegos {
         return categorias;
     }
 
-    void settiempoJugado(int _tiempoJugado){
+    void settiempoJugadoSegundos(int _tiempoJugadoSegundos){
 
-        tiempoJugado = _tiempoJugado;
+        tiempoJugadoSegundos = _tiempoJugadoSegundos;
     }
 
-    int gettiempoJugado() const {
+    int gettiempoJugadoSegundos() const {
 
-        return tiempoJugado;
+        return tiempoJugadoSegundos;
     }
 
     void agregarListaFavoritos(const string& videojuego){
@@ -486,13 +488,14 @@ class Videojuegos {
 
         startGame = time(nullptr);
         nombreJuegoActual = nombreJuego;
+        nombreJugadorActual = nombreJugador;
     }
 
     void finJuego(){
 
         if (startGame != 0){
             time_t endGame = time(nullptr);
-            tiempoJugado += difftime(endGame, startGame);
+            tiempoJugadoSegundos += difftime(endGame, startGame);
             registrosJuego.push_back(RegistroJuego(nombreJuegoActual, nombreJugadorActual, tiempoJugadoSegundos));
             startGame = 0;
         }
@@ -575,7 +578,7 @@ class Videojuegos {
         Lista<string> nombresJuegos;
         NodoP<string, Videojuegos>* nodo = multilista.get(0);
         while (nodo != nullptr){
-            nombreJuegos.add(nodo->get_dato());
+            nombresJuegos.add(nodo->get_dato());
             nodo = nodo->get_next();
         }
 
@@ -611,10 +614,10 @@ class Videojuegos {
 
         Nodo<int>* anioLanzamiento = aniosLanzamiento.get_head();
 
-        while (nodoanioLanzamiento != nullptr){
+        while (anioLanzamiento != nullptr){
             NodoP<int, Videojuegos>* nodoJuego = multilista.get(0);
 
-            while (nodoJuego->get_dato() == nodoanioLanzamiento->get_dato()){
+            while (nodoJuego->get_dato() == anioLanzamiento->get_dato()){
                 nodoJuego->get_lista()->print();
                 break;
             }
@@ -622,7 +625,7 @@ class Videojuegos {
             nodoJuego = nodoJuego->get_next();
         }
 
-        nodoanioLanzamiento = nodoanioLanzamiento->get_next();
+        anioLanzamiento = anioLanzamiento->get_next();
     }
 
     void mostrarJuegosPorPlataforma(Multilista<string, Videojuegos>& multilista, const string& plataforma){
@@ -640,29 +643,29 @@ class Videojuegos {
     void ordenarPorTiempoJugado(){
 
         sort(registrosJuego.begin(), registrosJuego.end(),
-            [](const RegistroJuego& a, const RegistroJuego& b){return a.tiempoJugado > b.tiempoJugado; });
+            [](const RegistroJuego& a, const RegistroJuego& b){return a.tiempoJugadoSegundos > b.tiempoJugadoSegundos; });
         
         for (const auto& registro : registrosJuego){
             cout << "Nombre del juego: " << registro.nombreJuego << ", Nombre del jugador: " << registro.nombreJugador
-            << ", Tiempo jugado: " << registro.tiempoJugado << " minutos" << endl;
+            << ", Tiempo jugado: " << registro.tiempoJugadoSegundos << " minutos" << endl;
         }
     }
 
     void ordenarPorJugador(){
 
         sort(registrosJuego.begin(), registrosJuego.end(),
-            [](const RegistroJuego& a, const RegistroJuego& b){return a.nombreJugador > b.nombreJugador});
+            [](const RegistroJuego& a, const RegistroJuego& b){return a.nombreJugador > b.nombreJugador;});
 
         for (const auto& registro : registrosJuego){
             cout << "Nombre del juego: " << registro.nombreJuego << ", Nombre del jugador: " << registro.nombreJugador
-            << ", Tiempo jugado: " << registro.tiempoJugado << " minutos" << endl;
+            << ", Tiempo jugado: " << registro.tiempoJugadoSegundos << " minutos" << endl;
         }
     }
 
     void ordenarPorJuegoMasJugado(){
 
         sort(registrosJuego.begin(), registrosJuego.end(),
-            [](const RegistroJuego& a, const RegistroJuego& b){return a.nombreJuego > b.nombreJuego});
+            [](const RegistroJuego& a, const RegistroJuego& b){return a.nombreJuego > b.nombreJuego;});
 
         vector<pair<string, int>> juegosTiempoTotal;
         string juegoActual = registrosJuego[0].nombreJuego;
@@ -670,11 +673,11 @@ class Videojuegos {
 
         for (const auto& registro : registrosJuego){
             if (registro.nombreJuego == juegoActual){
-                tiempoTotal += registro.tiempoJugado;
+                tiempoTotal += registro.tiempoJugadoSegundos;
             } else {
                 juegosTiempoTotal.push_back({juegoActual, tiempoTotal});
                 juegoActual = registro.nombreJuego;
-                tiempoTotal = registro.tiempoJugado;
+                tiempoTotal = registro.tiempoJugadoSegundos;
             }
         }
 
