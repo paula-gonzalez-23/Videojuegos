@@ -77,7 +77,7 @@ int main (){
                 user.mostrarListaFavoritos();
                 break;
             
-            case 6:
+            /*case 6:
 
                 cout << "Elija porque quiere consultar y mostrar la lista de juegos: " << endl;
                 cout << "1.Ordenados por titulo" << endl;
@@ -113,9 +113,9 @@ int main (){
                         cout << "Opcion no valida" << endl;
                         break;
                 }
-                break;
+                break;*/
             
-            case 7:
+            case 6:
 
                 cout << "Ingrese la opcion por la quiere ordenar los video juegos: " << endl;
                 cout << "1.Por jugador" << endl;

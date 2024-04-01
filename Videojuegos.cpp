@@ -575,29 +575,8 @@ class Videojuegos {
 
     void ordenadosPorTitulo(Multilista<string, Videojuegos>& multilista){
 
-        Lista<string> nombresJuegos;
-        NodoP<string, Videojuegos>* nodo = multilista.get(0);
-        while (nodo != nullptr){
-            nombresJuegos.add(nodo->get_dato());
-            nodo = nodo->get_next();
-        }
-
-        nombresJuegos.sort();
-
-        Nodo<string>* nombreJuego = nombresJuegos.get_head();
-        while (nombreJuego != nullptr){
-            NodoP<string, Videojuegos>* nodoJuego = multilista.get(0);
-            while (nodoJuego != nullptr){
-                if (nodoJuego->get_dato() == nombreJuego->get_dato()){
-                    nodoJuego->get_lista()->print();
-                    break;
-                }
-
-                nodoJuego = nodoJuego->get_next();
-            }
-
-            nombreJuego = nombreJuego->get_next();
-        }
+        int n = multilista.size();
+        
     }
 
     void ordenadosPorAnioLanzamiento(Multilista<int, Videojuegos>& multilista){
