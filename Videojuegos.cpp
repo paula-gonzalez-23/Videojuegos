@@ -34,6 +34,9 @@ class Videojuegos {
     list<string>juegoFavorito;
     vector<RegistroJuego> registrosJuego;
 
+    string nombreJuegoActual;
+    string nombreJugadorActual;
+
     public:
 
     Videojuegos(){
@@ -167,7 +170,7 @@ class Videojuegos {
         cout << "8.Salir" << endl;
     }
 
-    void iniciarJuego(const string& nombreJugador){
+    void iniciarJuego(const string& nombreJuego, const string& nombreJugador){
 
         startGame = time(nullptr);
         nombreJuegoActual = nombreJuego;
@@ -178,7 +181,7 @@ class Videojuegos {
         if (startGame != 0){
             time_t endGame = time(nullptr);
             tiempoJugado += difftime(endGame, startGame);
-            registrosJuego.push_back(RegistroJuego(nombreJuegoActual, nombreJugadorActual, tiempoJugadoSegudnos));
+            registrosJuego.push_back(RegistroJuego(nombreJuegoActual, nombreJugadorActual, tiempoJugadoSegundos));
             startGame = 0;
         }
     }
@@ -286,6 +289,7 @@ class Videojuegos {
 
         Lista<int> aniosLanzamiento;
         NodoP<int, Videojuegos>* nodo = multilista.get(0);
+
         while (nodo != nullptr){
             aniosLanzamiento.add(nodo->get_dato());
             nodo = nodo ->get_next();
@@ -294,9 +298,11 @@ class Videojuegos {
         aniosLanzamiento.sort();
 
         Nodo<int>* anioLanzamiento = aniosLanzamiento.get_head();
-        while (anioLanzamiento != nullptr){
+
+        while (nodoanioLanzamiento != nullptr){
             NodoP<int, Videojuegos>* nodoJuego = multilista.get(0);
-            while (nodoJuego->get_dato() == anioLanzamiento->get_dato()){
+
+            while (nodoJuego->get_dato() == nodoanioLanzamiento->get_dato()){
                 nodoJuego->get_lista()->print();
                 break;
             }
@@ -304,7 +310,7 @@ class Videojuegos {
             nodoJuego = nodoJuego->get_next();
         }
 
-        anioLanzamiento = anioLanzamiento->get_next();
+        nodoanioLanzamiento = nodoanioLanzamiento->get_next();
     }
 
     void mostrarJuegosPorPlataforma(Multilista<string, Videojuegos>& multilista, const string& plataforma){
