@@ -1,7 +1,22 @@
 #include <iostream>
 #include <vector>
 #include <list>
+#include <ctime> 
+#include <algorithm>
 using namespace std;
+
+struct RegistroJuego {
+
+    string nombreJuego, nombreJugador;
+    int tiempoJugado;
+
+    RegistroJuego(string _nombreJuego, string _nombreJugador, int _tiempoJugado){
+
+        nombreJuego = _nombreJuego;
+        nombreJugador = _nombreJugador;
+        tiempoJugado = _tiempoJugado;
+    }
+};
 
 class Videojuegos {
 
@@ -17,6 +32,7 @@ class Videojuegos {
     time_t startGame; //Tiempo de inicio del juego
 
     list<string>juegoFavorito;
+    vector<RegistroJuego> registrosJuego;
 
     public:
 
@@ -147,13 +163,14 @@ class Videojuegos {
         cout << "4.Agregar un juego a la lista de favoritos" << endl;
         cout << "5.Mostrar la lista de favoritos" << endl;
         cout << "6.Lista videojuegos por ordenamientos" << endl;
-        cout << "7.Ordenar por videojuegos mas jugados, con los tiempos c/u y nombre del jugaodr" << endl;
+        cout << "7.Ordenar por videojuegos mas jugados, con los tiempos c/u y nombre del jugador" << endl;
         cout << "8.Salir" << endl;
     }
 
-    void iniciarJuego(){
+    void iniciarJuego(const string& nombreJugador){
 
         startGame = time(nullptr);
+        nombreJuegoActual = nombreJuego;
     }
 
     void finJuego(){
@@ -161,6 +178,7 @@ class Videojuegos {
         if (startGame != 0){
             time_t endGame = time(nullptr);
             tiempoJugado += difftime(endGame, startGame);
+            registrosJuego.push_back(RegistroJuego(nombreJuegoActual, nombreJugadorActual, tiempoJugadoSegudnos));
             startGame = 0;
         }
     }
@@ -252,14 +270,107 @@ class Videojuegos {
         while (nombreJuego != nullptr){
             NodoP<string, Videojuegos>* nodoJuego = multilista.get(0);
             while (nodoJuego != nullptr){
-                if 
+                if (nodoJuego->get_dato() == nombreJuego->get_dato()){
+                    nodoJuego->get_lista()->print();
+                    break;
+                }
+
+                nodoJuego = nodoJuego->get_next();
             }
+
+            nombreJuego = nombreJuego->get_next();
         }
     }
 
+    void ordenadosPorAnioLanzamiento(Multilista<int, Videojuegos>& multilista){
 
-    
+        Lista<int> aniosLanzamiento;
+        NodoP<int, Videojuegos>* nodo = multilista.get(0);
+        while (nodo != nullptr){
+            aniosLanzamiento.add(nodo->get_dato());
+            nodo = nodo ->get_next();
+        }
 
-   
+        aniosLanzamiento.sort();
+
+        Nodo<int>* anioLanzamiento = aniosLanzamiento.get_head();
+        while (anioLanzamiento != nullptr){
+            NodoP<int, Videojuegos>* nodoJuego = multilista.get(0);
+            while (nodoJuego->get_dato() == anioLanzamiento->get_dato()){
+                nodoJuego->get_lista()->print();
+                break;
+            }
+
+            nodoJuego = nodoJuego->get_next();
+        }
+
+        anioLanzamiento = anioLanzamiento->get_next();
+    }
+
+    void mostrarJuegosPorPlataforma(Multilista<string, Videojuegos>& multilista, const string& plataforma){
+
+        NodoP<string, Videojuegos>* nodo = multilista.get(0);
+        while (nodo != nullptr){
+            if (nodo->get_dato() == plataforma){
+                nodo->get_lista()->print();
+            }
+
+            nodo = nodo->get_next();
+        }
+    }
+
+    void ordenarPorTiempoJugado(){
+
+        sort(registrosJuego.begin(), registrosJuego.end(),
+            [](const RegistroJuego& a, const RegistroJuego& b){return a.tiempoJugado > b.tiempoJugado; });
+        
+        for (const auto& registro : registrosJuego){
+            cout << "Nombre del juego: " << registro.nombreJuego << ", Nombre del jugador: " << registro.nombreJugador
+            << ", Tiempo jugado: " << registro.tiempoJugado << " minutos" << endl;
+        }
+    }
+
+    void ordenarPorJugador(){
+
+        sort(registrosJuego.begin(), registrosJuego.end(),
+            [](const RegistroJuego& a, const RegistroJuego& b){return a.nombreJugador > b.nombreJugador});
+
+        for (const auto& registro : registrosJuego){
+            cout << "Nombre del juego: " << registro.nombreJuego << ", Nombre del jugador: " << registro.nombreJugador
+            << ", Tiempo jugado: " << registro.tiempoJugado << " minutos" << endl;
+        }
+    }
+
+    void ordenarPorJuegoMasJugado(){
+
+        sort(registrosJuego.begin(), registrosJuego.end(),
+            [](const RegistroJuego& a, const RegistroJuego& b){return a.nombreJuego > b.nombreJuego});
+
+        vector<pair<string, int>> juegosTiempoTotal;
+        string juegoActual = registrosJuego[0].nombreJuego;
+        int tiempoTotal = 0;
+
+        for (const auto& registro : registrosJuego){
+            if (registro.nombreJuego == juegoActual){
+                tiempoTotal += registro.tiempoJugado;
+            } else {
+                juegosTiempoTotal.push_back({juegoActual, tiempoTotal});
+                juegoActual = registro.nombreJuego;
+                tiempoTotal = registro.tiempoJugado;
+            }
+        }
+
+        juegosTiempoTotal.push_back({juegoActual, tiempoTotal});
+
+        sort(juegosTiempoTotal.begin(), juegosTiempoTotal.end(),
+            [](const pair<string, int>& a, const pair<string, int>& b){return a.second > b.second;});
+        
+        cout << "Juegos mas jugados: " << endl;
+        for (const auto& juegoTiempo : juegosTiempoTotal){
+            cout << "Nombre del juego: " << juegoTiempo.first << ", Tiempo jugado: " << juegoTiempo.second << " segundos" << endl;
+        }
+
+    }
+
 
 };

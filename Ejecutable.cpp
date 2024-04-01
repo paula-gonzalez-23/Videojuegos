@@ -5,7 +5,8 @@ using namespace std;
 
 int main (){
 
-    int opcion, opcion1, opcion3;
+    int opcion, opcion1, opcion3, opcion4;
+    string plataforma;
 
     Videojuegos user;
     Ahorcado user1;
@@ -76,36 +77,79 @@ int main (){
                 cout << "1.Ordenados por titulo" << endl;
                 cout << "2.Ordenados por anio de Lanzamiento" << endl;
                 cout << "3.Filtrados por una plataforma espeifica" << endl;
+                cout << "Elije tu opcion" << endl;
                 cin >> opcion3;
 
                 switch(opcion3){
                     case 1:
+
                         cout << "Lista de videojuegos ordenados por titulo" << endl;
-                        
+                        user.ordenadosPorTitulo(multilista);
+                        break;
+                    
+                    case 2:
+                    
+                        cout << "Lista de videojuegos ordenados por anio de lanzamiento" << endl;
+                        user.ordenadosPorAnioLanzamiento(multilista);
+                        break;
+                    
+                    case 3:
+
+                        cout << "Ingrese la plataforma para filtrar los videojuegos: " << endl;
+                        cin >> plataforma;
+
+                        cout << "Lista de videjuegos para la plataforma " << plataforma << ":" << endl;
+                        user.mostrarJuegosPorPlataforma(multilista,plataforma);
+                        break;
+                    
+                    default:
+
+                        cout << "Opcion no valida" << endl;
+                        break;
+                
+                break;
+            
+            case 7:
+
+                cout << "Ingrese la opcion por la quiere ordenar los video juegos: " << endl;
+                cout << "1.Por jugador" << endl;
+                cout << "2.Por tiempo jugado" << endl;
+                cout << "3.Por juego mas jugado" << endl;
+                cout << "Elije tu opcion: " << endl;
+                cin >> opcion4;
+
+                switch(opcion4){
+                    case 1:
+
+                        user.ordenarPorJugador();
+                        break;
+
+                    case 2:
+
+                        user.ordenarPorTiempoJugado();
+                        break;
+
+                    case 3:
+
+                        user.ordenarPorJuegoMasJugado();
+                        break;
+                    
+                    default:
+
+                        cout << "Opcion no valida" << endl;
+                        break;
                 }
 
+                break;
+            
+            default:
 
-
-
-
-
-
-
-
-
-
-
-                
+                cout << "Opcion no valida" << endl;
+                break;
 
         }
 
-        
     } while (opcion != 8);
-
-
-
-
-
 
 
     return 0;
