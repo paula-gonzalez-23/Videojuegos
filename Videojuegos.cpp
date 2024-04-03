@@ -348,7 +348,7 @@ class Videojuegos {
 
         cout << "Bienvenido a Mattel" << endl;
         cout << "1.Mostrar videojuegos disponibles para jugar" << endl;
-        cout << "2.Agregar un videojuego" << endl;
+        cout << "2.Agregar un videojuego a la categoria" << endl;
         cout << "3.Asignar categorias a un videojuego" << endl;
         cout << "4.Agregar un juego a la lista de favoritos" << endl;
         cout << "5.Mostrar la lista de favoritos" << endl;
@@ -423,7 +423,21 @@ class Videojuegos {
                 break;
             }
 
-            juegoFavorito.push_back(juego);
+            bool encontrado = false;
+            for (const auto& juegos : multilista){
+                if (find(juegos.begin(), juegos.end(), juego) != juegos.end()){
+                    encontrado = true;
+                    break;
+                }
+            }
+
+            if (encontrado){
+                juegoFavorito.push_back(juego);
+                cout << "Juego agregado a la lista de favoritos" << endl;
+            } else{
+                
+                cout << "El juego no existe en la multilista. Intentelo de nuevo" << endl;
+            }
         }
     }
 
