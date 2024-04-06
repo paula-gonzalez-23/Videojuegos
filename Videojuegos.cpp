@@ -19,7 +19,7 @@ class Videojuegos {
     int tiempoJugadoSegundos; 
     time_t startGame; //Tiempo de inicio del juego
 
-    list<string>juegoFavorito;
+    
 
     public:
 
@@ -97,15 +97,6 @@ class Videojuegos {
         return tiempoJugadoSegundos;
     }
 
-    void agregarListaFavoritos(const string& videojuego){
-
-        juegoFavorito.push_back(videojuego);
-    }
-    
-    const list<string>& getjuegoFavorito() const {
-
-        return juegoFavorito;
-    }
 
     void verInfo(string juego) {
 
@@ -167,84 +158,6 @@ class Videojuegos {
             tiempoJugadoSegundos += difftime(endGame, startGame);
             startGame = 0;
         }
-    }
-
-    void crearCategoria(Multilista<string, Videojuegos>& multilista){
-
-        string categoria;
-
-        cout << "Ingrese el nombre de la categoria que desea crear: " << endl;
-        cin >> categoria;
-
-        multilista.add(categoria);
-
-        cout << "Categoria " << categoria << " creada exitosamente" << endl;
-    }
-
-    void agregarJuegoACategoria(Multilista<string, Videojuegos>& multilista){
-
-        int categoriaIndex;
-        string categoria, juego;
-
-        cout << "Seleccione la categoria a la que desea agregar un juego: " << endl;
-        multilista.print();
-
-        cout << "Ingrese el indice de la categoria: "<< endl;
-        cin >> categoriaIndex;
-
-        NodoP<string, Videojuegos>* categoria = multilista.get(categoriaIndex);
-        if (categoria == nullptr){
-            cout << "El indice de categoria ingresado no es valido" << endl;
-            return;
-        }
-
-        cout << "Ingrese el nombre del juego que desea agregar a la categoria " << categoria -> dato() << ":" << endl;
-        cin >> juego;
-
-        Videojuegos nuevoJuego;
-        nuevoJuego.setnombre(juego);
-
-        categoria -> add(juego);
-
-        cout << "Juego " << juego << " agregado a la categoria " << categoria -> dato() << " exitosamente" << endl;
-    }
-
-    void agregarListaFavoritos(const Multilista<string, Videojuegos>& multilista, list<string>& juegoFavorito){
-
-        string juego;
-
-        cout << "Ingrese el nombre del juego que desea agregar a su lista de favoritos (0 para salir): " << endl;
-        cin >> juego;
-
-        bool encontrado = false;
-        for (const auto& categorias : Multilista){
-            for (const auto& juegoCategoria : categorias){
-                if (juegoCategoria.getnombre() == juego){
-                    encontrado = true;
-                    break;
-                }
-            }
-
-            if (encontrado){
-                break;
-            }
-        }
-
-        if (encontrado) {
-            juegoFavorito.push_back(juego);
-            cout << "Juego agregado a la lista de favoritos" << endl;
-        } else{
-            cout << "El juego no existe en la multilista" << endl;
-        }
-    }
-
-    void mostrarListaFavoritos(const list<string>& juegoFavorito){ 
-
-        cout << "La lista de juegos favoritos es: " << endl;
-        for (const auto& videojuego : juegoFavorito){
-            cout << videojuego << ", ";
-        }
-        cout << endl;
     }
 
     void ordenadosPorTitulo(Multilista<string, Videojuegos>& multilista){
@@ -371,10 +284,10 @@ private:
         }
 
         void print(){
-            NodoP* t = ptr;
+            NodoP* t = nextP;
             while(t != nullptr){
                 cout << t->dato << " -> " << endl;
-                t -> print();
+                t -> l -> print();
                 t = t -> nextP;
             }
         }
@@ -382,11 +295,23 @@ private:
 
     NodoP* ptr;
     int size;
+    vector<string>juegoFavorito;
     
 public:
+
+    void agregarListaFavoritos(const string& videojuego){
+
+        juegoFavorito.push_back(videojuego);
+    }
+    
+    const vector<string>& getjuegoFavorito() const {
+
+        return juegoFavorito;
+    }
+    
     Multilista(){
 
-        ptr = NULL;
+        ptr = nullptr;
         size = 0;
     }
   
@@ -395,6 +320,7 @@ public:
         NodoP* temp = ptr;
         while (temp != nullptr){
             NodoP* next_temp = temp -> nextP;
+            delete temp -> l;
             delete temp;
             temp = next_temp;
         }
@@ -420,7 +346,7 @@ public:
         NodoP* t = ptr;
         while(t != nullptr){
             cout << t->dato << " -> " << endl;
-            t -> print();
+            t -> l -> print();
             t = t -> nextP;
         }
     }
@@ -447,6 +373,11 @@ public:
             size++;
         }  
     }
+
+    int getSize() const {
+        
+        return size;
+    }
   
     NodoP* get(int i){
         NodoP* t = ptr;
@@ -456,5 +387,103 @@ public:
             j++;
         }
         return t;
-    }  
+    } 
+
+    void agregarCategoria(){
+        
+        T categoria;
+
+        cout << "Ingrese el nombre de la categoria: " << endl;
+        cin >> categoria;
+
+        add(categoria);
+    } 
+
+    void agregarJuegoACategoria(){
+
+        T2 juego;
+        int categoria;
+        int indice = 0;
+
+        cout << "Ingrese el nombre del juego: " << endl;
+        cin >> juego;
+
+        cout << "Categorias disponibles: " << endl;
+        NodoP* t = ptr;
+        while (t != nullptr){
+            cout << indice << ". " << t->dato << endl;
+            t = t-> nextP;
+            indice++;
+        }
+        
+        cout << "Ingrese el indice de la categoria donde desea agregar el juego: " << endl;
+        cin >> categoria;
+
+        if (categoria >=0 && categoria < size){
+            NodoP* categoria_nodo = get(categoria);
+            if (categoria_nodo != nullptr){
+                categoria_nodo -> l -> add(juego);
+            } else {
+                cout << "El indice especificado no existe" << endl;
+            }
+        } else {
+
+            cout << "El indice de categoria es invalido" << endl;
+        }
+    }
+
+    void agregarAFavoritos(const Multilista<string, string>& multilista){
+
+        string juego;
+
+        cout << "Ingrese el nombre del juego que desea agregar a favoritos: " << endl;
+        cin >> juego;
+
+        bool juegoExiste = false;
+        for (int i = 0; i < multilista.getSize(); ++i){
+            Multilista<string, string>::NodoP * categoria = multilista.get(i);
+            if (categoria != nullptr){
+                Multilista<string, string>* listaJuegos = categoria -> l;
+                for (Multilista<string, string>::NodoP * juegoNode = listaJuegos ->ptr; juegoNode != nullptr; juegoNode = juegoNode->nextP){
+                    if (juegoNode -> dato == juego){
+                        juegoExiste = true;
+                        break;
+                    }
+                }
+            }
+
+            if (juegoExiste) break;
+        }
+
+        if (juegoExiste){
+
+            bool juegoYaEnFavoritos = false;
+            for (const string& fav : juegoFavorito){
+                if (fav == juego){
+                    juegoYaEnFavoritos = true;
+                    break;
+                }
+            }
+
+            if (!juegoYaEnFavoritos){
+                juegoFavorito.push_back(juego);
+                cout << "Juego agregado a la lista de favoritos" << endl;
+            } else {
+                cout << "El juego ya existe en la lista de favoritos" << endl;
+            }
+
+        } else{
+            cout << "El juego no existe en la multilista" << endl;
+        }
+ 
+    }
+
+    void mostrarFavoritos() const{
+
+        cout << "La lista de favoritos es: " << endl;
+        for (const string&fav : juegoFavorito){
+            cout << fav << endl;
+        }
+    }
+    
 };
