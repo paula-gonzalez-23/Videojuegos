@@ -308,7 +308,7 @@ public:
 
         return juegoFavorito;
     }
-    
+
     Multilista(){
 
         ptr = nullptr;
@@ -432,50 +432,29 @@ public:
         }
     }
 
-    void agregarAFavoritos(const Multilista<string, string>& multilista){
+    void agregarAFavoritos(){
 
         string juego;
 
         cout << "Ingrese el nombre del juego que desea agregar a favoritos: " << endl;
         cin >> juego;
 
-        bool juegoExiste = false;
-        for (int i = 0; i < multilista.getSize(); ++i){
-            Multilista<string, string>::NodoP * categoria = multilista.get(i);
-            if (categoria != nullptr){
-                Multilista<string, string>* listaJuegos = categoria -> l;
-                for (Multilista<string, string>::NodoP * juegoNode = listaJuegos ->ptr; juegoNode != nullptr; juegoNode = juegoNode->nextP){
-                    if (juegoNode -> dato == juego){
-                        juegoExiste = true;
-                        break;
-                    }
+        NodoP* temp = ptr;
+        while (temp != nullptr){
+            NodoP* listaJuegos = temp -> l -> ptr;
+            while (listaJuegos != nullptr){
+                if (listaJuegos -> dato == juego){
+                    temp ->l -> juegoFavorito.push_back(juego);
+                    cout << "Juego agregado exitosamente" << endl;
+                    return;
                 }
+                listaJuegos = listaJuegos->nextP;
             }
-
-            if (juegoExiste) break;
+            temp = temp -> nextP;
         }
 
-        if (juegoExiste){
+        cout << "El juego no existe en la multilista" << endl;
 
-            bool juegoYaEnFavoritos = false;
-            for (const string& fav : juegoFavorito){
-                if (fav == juego){
-                    juegoYaEnFavoritos = true;
-                    break;
-                }
-            }
-
-            if (!juegoYaEnFavoritos){
-                juegoFavorito.push_back(juego);
-                cout << "Juego agregado a la lista de favoritos" << endl;
-            } else {
-                cout << "El juego ya existe en la lista de favoritos" << endl;
-            }
-
-        } else{
-            cout << "El juego no existe en la multilista" << endl;
-        }
- 
     }
 
     void mostrarFavoritos() const{
