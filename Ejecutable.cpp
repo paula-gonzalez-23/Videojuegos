@@ -72,12 +72,12 @@ int main() {
 
             case 5:
 
-            user3.agregarAFavoritos();
+            user.agregarAFavoritos();
             break;
 
             case 6:
 
-            user3.mostrarFavoritos();
+            user.mostrarFavoritos();
             break;
 
             case 7:

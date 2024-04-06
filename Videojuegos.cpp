@@ -42,6 +42,7 @@ class Videojuegos {
     time_t startGame; //Tiempo de inicio del juego
 
     vector<Juego> listaJuegos;
+    vector<string>juegoFavorito;
 
     
 
@@ -125,6 +126,16 @@ class Videojuegos {
         listaJuegos.push_back(juego);
     }
 
+    void agregarListaFavoritos(const string& videojuego){
+
+        juegoFavorito.push_back(videojuego);
+    }
+    
+    const vector<string>& getjuegoFavorito() const {
+
+        return juegoFavorito;
+    }
+
     void verInfo(string juego) {
 
         cout << "Nombre: " << nombre << endl;
@@ -205,6 +216,45 @@ class Videojuegos {
         agregarJuego(nuevoJuego);
         cout << "Juego registrado correctamente" << endl;
     }
+
+    void agregarAFavoritos(){
+
+        string nombreJuego;
+
+        cout << "Ingrese el nombre del juego que desea agregar a favoritos: " << endl;
+        cin >> nombreJuego;
+
+        bool juegoEncontrado = false;
+        for (const Juego& juego : listaJuegos){
+            if (juego.nombre == nombreJuego){
+                juegoEncontrado = true;
+                break;
+            }
+        }
+
+        if (juegoEncontrado){
+            juegoFavorito.push_back(nombreJuego);
+            cout << "El juego ha sido agregado exitosamente" << endl;
+        } else{
+            cout << "El juego no ha sido registrado previamente" << endl;
+        }
+    }
+
+    void mostrarFavoritos() const{
+
+        cout << "La lista de favoritos es: " << endl;
+        for (const string&fav : juegoFavorito){
+            cout << fav << endl;
+        }
+    }
+
+    void ordenarPorTitulo(){
+
+        sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego& a, const Juego&b){
+            return a.nombre < b.nombre;
+        });
+
+    }
 };
 
 template <typename T, typename T2>
@@ -242,19 +292,9 @@ private:
 
     NodoP* ptr;
     int size;
-    vector<string>juegoFavorito;
+    
     
 public:
-
-    void agregarListaFavoritos(const string& videojuego){
-
-        juegoFavorito.push_back(videojuego);
-    }
-    
-    const vector<string>& getjuegoFavorito() const {
-
-        return juegoFavorito;
-    }
 
     Multilista(){
 
@@ -376,39 +416,6 @@ public:
         } else {
 
             cout << "El indice de categoria es invalido" << endl;
-        }
-    }
-
-    void agregarAFavoritos(){
-
-        string juego;
-
-        cout << "Ingrese el nombre del juego que desea agregar a favoritos: " << endl;
-        cin >> juego;
-
-        NodoP* temp = ptr;
-        while (temp != nullptr){
-            NodoP* listaJuegos = temp -> l -> ptr;
-            while (listaJuegos != nullptr){
-                if (listaJuegos -> dato == juego){
-                    temp ->l -> juegoFavorito.push_back(juego);
-                    cout << "Juego agregado exitosamente" << endl;
-                    return;
-                }
-                listaJuegos = listaJuegos->nextP;
-            }
-            temp = temp -> nextP;
-        }
-
-        cout << "El juego no existe en la multilista" << endl;
-
-    }
-
-    void mostrarFavoritos() const{
-
-        cout << "La lista de favoritos es: " << endl;
-        for (const string&fav : juegoFavorito){
-            cout << fav << endl;
         }
     }
     
