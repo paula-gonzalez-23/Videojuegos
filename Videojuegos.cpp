@@ -5,6 +5,28 @@
 #include <algorithm>
 using namespace std;
 
+struct Juego {
+
+    string nombre;
+    string desarrollador;
+    int anioLanzamiento;
+    string plataforma;
+    int cantidadJugadores;
+    vector<string> categoriasJuego;
+    
+    Juego(const string& nombre,const string& desarrollador, int anioLanzamiento,
+    const string& plataforma, int cantidadJugadores, const vector<string>& categorias){
+
+        this -> nombre = nombre;
+        this -> desarrollador = desarrollador;
+        this -> anioLanzamiento = anioLanzamiento;
+        this -> plataforma = plataforma;
+        this -> cantidadJugadores = cantidadJugadores;
+        this -> categoriasJuego = categorias;
+
+    }
+};
+
 class Videojuegos {
 
     private:
@@ -18,6 +40,8 @@ class Videojuegos {
 
     int tiempoJugadoSegundos; 
     time_t startGame; //Tiempo de inicio del juego
+
+    vector<Juego> listaJuegos;
 
     
 
@@ -97,6 +121,9 @@ class Videojuegos {
         return tiempoJugadoSegundos;
     }
 
+    void agregarJuego(const Juego& juego){
+        listaJuegos.push_back(juego);
+    }
 
     void verInfo(string juego) {
 
@@ -113,21 +140,13 @@ class Videojuegos {
 
         if(juego == "Ahorcado"){
 
-            setnombre("Juego del Ahorcado");
-            setdesarrollador("Julio Roberto Garbini");
-            setanioLanzamiento(1978);
-            setplataforma("Speak & Sell");
-            setcantidadJugadores(1);
-            setCategoriasJuego({"Juego de Palabras", "Juego de adivinanzaz"});
+            Juego nuevoJuego("Juego del Ahorcado", "Julio Roberto Garbini", 1978, "Speak & Sell", 1, {"Juego de Palabras", "Juego de Adivinanzas"});
+            agregarJuego(nuevoJuego);
 
         }else if (juego == "Sonar"){
             
-            setnombre("Sonar");
-            setdesarrollador("Roberto Fraga");
-            setanioLanzamiento(2017);
-            setplataforma("Manual");
-            setcantidadJugadores(1);
-            setCategoriasJuego({"Juego de Estrategia"});
+            Juego nuevoJuego("Sonar", "Roberto Fraga", 2017, "Manual", 1, {"Juego de Estrategia"});
+            agregarJuego(nuevoJuego);
     
         }
     }
@@ -135,13 +154,13 @@ class Videojuegos {
     void menu(){
 
         cout << "Bienvenido a Mattel" << endl;
-        cout << "1.Mostrar videojuegos disponibles para jugar" << endl;
-        cout << "2.Agregar un videojuego a la categoria deseada" << endl;
-        cout << "3.Asignar categorias a un videojuego" << endl;
-        cout << "4.Agregar un juego a la lista de favoritos" << endl;
-        cout << "5.Mostrar la lista de favoritos" << endl;
-        cout << "6.Lista videojuegos por ordenamientos" << endl;
-        cout << "7.Ordenar por videojuegos mas jugados, con los tiempos c/u y nombre del jugador" << endl;
+        cout << "1.Registar Juego" << endl;
+        cout << "2.Mostrar videojuegos disponibles para jugar" << endl;
+        cout << "3.Crear categorias" << endl;
+        cout << "4.Agregar juegos a las categorias" << endl;
+        cout << "5.Agregar un juego a la lista de favoritos" << endl;
+        cout << "6.Mostrar la lista de favoritos" << endl;
+        cout << "7.Lista videojuegos por ordenamientos" << endl;
         cout << "8.Salir" << endl;
     }
 
@@ -159,104 +178,32 @@ class Videojuegos {
             startGame = 0;
         }
     }
+    
+    void registrarJuego(){
 
-    void ordenadosPorTitulo(Multilista<string, Videojuegos>& multilista){
+        string nombre, desarrollador, plataforma, categoria;
+        int anioLanzamiento, cantidadJugadores;
+        vector<string> categoriasJuego;
 
-        int n = multilista.size();
-        
-    }
+        cout << "Ingrese el nombre del juego: " << endl;
+        cin >> nombre;
+        cout << "Ingrese el desarrollador del juego: " << endl;
+        cin >> desarrollador;
+        cout << "Ingrese el anio de lanzamiento del juego: " << endl;
+        cin >> anioLanzamiento;
+        cout << "Ingrese la plataforma donde se juega el juego: " << endl;
+        cin >> plataforma;
+        cout << "Ingrese la cantidad de jugadores: " << endl;
+        cin >> cantidadJugadores;
 
-    void ordenadosPorAnioLanzamiento(Multilista<int, Videojuegos>& multilista){
-
-        Lista<int> aniosLanzamiento;
-        NodoP<int, Videojuegos>* nodo = multilista.get(0);
-
-        while (nodo != nullptr){
-            aniosLanzamiento.add(nodo->get_dato());
-            nodo = nodo ->get_next();
+        cout << "Ingrese las categorias del juego (ingrese 'fin' para terminar): " << endl;
+        while (cin >> categoria && categoria != "fin"){
+            categoriasJuego.push_back(categoria);
         }
 
-        aniosLanzamiento.sort();
-
-        Nodo<int>* anioLanzamiento = aniosLanzamiento.get_head();
-
-        while (anioLanzamiento != nullptr){
-            NodoP<int, Videojuegos>* nodoJuego = multilista.get(0);
-
-            while (nodoJuego->get_dato() == anioLanzamiento->get_dato()){
-                nodoJuego->get_lista()->print();
-                break;
-            }
-
-            nodoJuego = nodoJuego->get_next();
-        }
-
-        anioLanzamiento = anioLanzamiento->get_next();
-    }
-
-    void mostrarJuegosPorPlataforma(Multilista<string, Videojuegos>& multilista, const string& plataforma){
-
-        NodoP<string, Videojuegos>* nodo = multilista.get(0);
-        while (nodo != nullptr){
-            if (nodo->get_dato() == plataforma){
-                nodo->get_lista()->print();
-            }
-
-            nodo = nodo->get_next();
-        }
-    }
-
-    void ordenarPorTiempoJugado(){
-
-        sort(registrosJuego.begin(), registrosJuego.end(),
-            [](const RegistroJuego& a, const RegistroJuego& b){return a.tiempoJugadoSegundos > b.tiempoJugadoSegundos; });
-        
-        for (const auto& registro : registrosJuego){
-            cout << "Nombre del juego: " << registro.nombreJuego << ", Nombre del jugador: " << registro.nombreJugador
-            << ", Tiempo jugado: " << registro.tiempoJugadoSegundos << " minutos" << endl;
-        }
-    }
-
-    void ordenarPorJugador(){
-
-        sort(registrosJuego.begin(), registrosJuego.end(),
-            [](const RegistroJuego& a, const RegistroJuego& b){return a.nombreJugador > b.nombreJugador;});
-
-        for (const auto& registro : registrosJuego){
-            cout << "Nombre del juego: " << registro.nombreJuego << ", Nombre del jugador: " << registro.nombreJugador
-            << ", Tiempo jugado: " << registro.tiempoJugadoSegundos << " minutos" << endl;
-        }
-    }
-
-    void ordenarPorJuegoMasJugado(){
-
-        sort(registrosJuego.begin(), registrosJuego.end(),
-            [](const RegistroJuego& a, const RegistroJuego& b){return a.nombreJuego > b.nombreJuego;});
-
-        vector<pair<string, int>> juegosTiempoTotal;
-        string juegoActual = registrosJuego[0].nombreJuego;
-        int tiempoTotal = 0;
-
-        for (const auto& registro : registrosJuego){
-            if (registro.nombreJuego == juegoActual){
-                tiempoTotal += registro.tiempoJugadoSegundos;
-            } else {
-                juegosTiempoTotal.push_back({juegoActual, tiempoTotal});
-                juegoActual = registro.nombreJuego;
-                tiempoTotal = registro.tiempoJugadoSegundos;
-            }
-        }
-
-        juegosTiempoTotal.push_back({juegoActual, tiempoTotal});
-
-        sort(juegosTiempoTotal.begin(), juegosTiempoTotal.end(),
-            [](const pair<string, int>& a, const pair<string, int>& b){return a.second > b.second;});
-        
-        cout << "Juegos mas jugados: " << endl;
-        for (const auto& juegoTiempo : juegosTiempoTotal){
-            cout << "Nombre del juego: " << juegoTiempo.first << ", Tiempo jugado: " << juegoTiempo.second << " segundos" << endl;
-        }
-
+        Juego nuevoJuego(nombre, desarrollador, anioLanzamiento, plataforma, cantidadJugadores, categoriasJuego);
+        agregarJuego(nuevoJuego);
+        cout << "Juego registrado correctamente" << endl;
     }
 };
 
