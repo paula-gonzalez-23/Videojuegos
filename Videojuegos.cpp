@@ -5,209 +5,6 @@
 #include <algorithm>
 using namespace std;
 
-
-template <typename T>
-struct Nodo {
-
-    T dato;
-    Nodo* next:
-
-    Nodo(){
-
-        next = nullptr;
-    }
-
-    Nodo(T d){
-
-        dato = d;
-        next = nullptr;
-    }
-};
-
-template <typename T>
-
-class Lista{
-
-private:
-    Nodo<T>* ptr;
-    int size;
-         
-public:
-    Lista(){
-        ptr = NULL;
-        size = 0;
-    }
-  
-    ~Lista(){
-        Nodo<T>* temp = ptr;
-        while (temp != nullptr){
-            Nodo<T>* next_temp = temp -> next;
-            delete temp;
-            temp = next_temp;
-        }
-    }
-
-    void add(T d){
-        Nodo<T>* n = new Nodo<T>(d);
-        if (ptr == NULL){
-            ptr =  n;
-        } else{
-            Nodo<T>* t = ptr;
-            while(t -> next != nullptr){
-                t = t-> next;
-            }
-            t -> next = n;
-        }
-        size++;
-    }
-
-    void print(){
-        Nodo<T>* t = ptr;
-        while(t != NULL){
-            cout << t -> dato <<endl;
-            t = t -> next;
-        }
-    }
-  
-    void insert(T dato, int pos){
-        Nodo<T>* new_nodo = new Nodo<T>(dato);
-      
-        if (ptr == NULL || pos <= 0){
-            new_nodo -> next = ptr;
-            ptr = new_nodo;
-            size++;
-        } else if(pos >= size){
-            add(dato);
-        } else{
-            Nodo<T>* t = ptr;
-            int i = 0;
-            while(i < pos-1){
-                t = t -> next;
-                i++;
-            }
-            new_nodo -> next = t -> next;
-            t -> next = new_nodo;
-            size++;
-        }
-  
-    }
-};
-
-template <typename T, typename T2>
-
-struct NodoP{
-    T dato;
-    NodoP<T, T2>* nextP;
-    Lista<T2>* l;
-
-    NodoP() {
-
-        nextP = nullptr;
-        l = new Lista<T2>();
-    }
-
-    NodoP(T d) {
-
-        dato = d;
-        nextP = nullptr;
-        l = new Lista<T2>();
-    }
-
-    void add(T2 d){
-
-        l -> add(d);
-    }
-
-    void print(){
-        
-        cout << dato << " -> " << endl;
-        l -> print();
-    }
-};
-
-template <typename T, typename T2>
-
-class Multilista{
-
-private:
-    NodoP<T,T2>* ptr;
-    int size;
-
-public:
-    Multilista(){
-
-        ptr = NULL;
-        size = 0;
-    }
-  
-    ~Multilista(){
-
-        NodoP<T, T2>* temp = ptr;
-        while (temp != nullptr){
-            NodoP<T, T2>* next_temp = temp -> nextP;
-            delete temp;
-            temp = next_temp;
-        }
-      
-    }
-  
-    void add(T d){
-        NodoP<T,T2>* n = new NodoP<T,T2>(d);
-
-        if (ptr == NULL){
-            ptr =  n;
-        } else{
-            NodoP<T,T2>* t = ptr;
-            while(t -> nextP != nullptr){
-                t = t -> nextP;
-            }
-            t -> nextP = n;
-        }
-        size++;
-    }
-
-    void print(){
-        NodoP<T,T2>* t = ptr;
-        while(t != nullptr){
-            t -> print();
-            t = t -> nextP;
-        }
-    }
-  
-    void insert(T dato, int pos){
-
-        NodoP<T,T2>* new_nodo = new NodoP<T,T2>(dato);
-      
-        if (ptr == nullptr || pos <= 0){
-            new_nodo -> nextP = ptr;
-            ptr = new_nodo;
-            size++;
-        } else if(pos >= size){
-            add(dato);
-        } else{
-            NodoP<T,T2>* t = ptr;
-            int i = 0;
-            while (i < pos-1){
-                t = t -> nextP;
-                i++;
-            }
-            new_nodo -> nextP = t -> nextP;
-            t -> nextP = new_nodo;
-            size++;
-        }  
-    }
-  
-    NodoP<T,T2>* get(int i){
-        NodoP<T,T2>* t = ptr;
-        int j = 0;
-        while (t != nullptr && j < i){
-            t = t -> nextP;
-            j++;
-        }
-        return t;
-    }  
-};
-
 class Videojuegos {
 
     private:
@@ -348,7 +145,7 @@ class Videojuegos {
 
         cout << "Bienvenido a Mattel" << endl;
         cout << "1.Mostrar videojuegos disponibles para jugar" << endl;
-        cout << "2.Agregar un videojuego a la categoria" << endl;
+        cout << "2.Agregar un videojuego a la categoria deseada" << endl;
         cout << "3.Asignar categorias a un videojuego" << endl;
         cout << "4.Agregar un juego a la lista de favoritos" << endl;
         cout << "5.Mostrar la lista de favoritos" << endl;
@@ -372,32 +169,7 @@ class Videojuegos {
         }
     }
 
-    void agregarJuegoACategoria(Multilista<string, string>& multilista){
-
-        int categoriaIndex;
-        string categoria, juego;
-
-        cout << "Seleccione la categoria a la que desea agregar un juego: " << endl;
-        multilista.print();
-
-        cout << "Ingrese el indice de la categoria: "<< endl;
-        cin >> categoriaIndex;
-
-        NodoP<string, string>* nodoCategoria = multilista.get(categoriaIndex);
-        if (nodoCategoria == nullptr){
-            cout << "El indice de categoria ingresado no es valido" << endl;
-            return;
-        }
-
-        cout << "Ingrese el nombre del juego que desea agregar a la categoria " << nodoCategoria -> dato() << ":" << endl;
-        cin >> juego;
-
-        nodoCategoria -> add(juego);
-
-        cout << "Juego " << juego << " agregado a la categoria " << nodoCategoria -> dato() << " exitosamente" << endl;
-    }
-
-    void crearCategoria(Multilista<string, string>& multilista){
+    void crearCategoria(Multilista<string, Videojuegos>& multilista){
 
         string categoria;
 
@@ -409,47 +181,70 @@ class Videojuegos {
         cout << "Categoria " << categoria << " creada exitosamente" << endl;
     }
 
-    void agregarListaFavoritos(){
+    void agregarJuegoACategoria(Multilista<string, Videojuegos>& multilista){
+
+        int categoriaIndex;
+        string categoria, juego;
+
+        cout << "Seleccione la categoria a la que desea agregar un juego: " << endl;
+        multilista.print();
+
+        cout << "Ingrese el indice de la categoria: "<< endl;
+        cin >> categoriaIndex;
+
+        NodoP<string, Videojuegos>* categoria = multilista.get(categoriaIndex);
+        if (categoria == nullptr){
+            cout << "El indice de categoria ingresado no es valido" << endl;
+            return;
+        }
+
+        cout << "Ingrese el nombre del juego que desea agregar a la categoria " << categoria -> dato() << ":" << endl;
+        cin >> juego;
+
+        Videojuegos nuevoJuego;
+        nuevoJuego.setnombre(juego);
+
+        categoria -> add(juego);
+
+        cout << "Juego " << juego << " agregado a la categoria " << categoria -> dato() << " exitosamente" << endl;
+    }
+
+    void agregarListaFavoritos(const Multilista<string, Videojuegos>& multilista, list<string>& juegoFavorito){
 
         string juego;
 
         cout << "Ingrese el nombre del juego que desea agregar a su lista de favoritos (0 para salir): " << endl;
-        
+        cin >> juego;
 
-        while (true){
-            cin >> juego;
-
-            if(juego == "0"){
-                break;
-            }
-
-            bool encontrado = false;
-            for (const auto& juegos : multilista){
-                if (find(juegos.begin(), juegos.end(), juego) != juegos.end()){
+        bool encontrado = false;
+        for (const auto& categorias : Multilista){
+            for (const auto& juegoCategoria : categorias){
+                if (juegoCategoria.getnombre() == juego){
                     encontrado = true;
                     break;
                 }
             }
 
             if (encontrado){
-                juegoFavorito.push_back(juego);
-                cout << "Juego agregado a la lista de favoritos" << endl;
-            } else{
-                
-                cout << "El juego no existe en la multilista. Intentelo de nuevo" << endl;
+                break;
             }
+        }
+
+        if (encontrado) {
+            juegoFavorito.push_back(juego);
+            cout << "Juego agregado a la lista de favoritos" << endl;
+        } else{
+            cout << "El juego no existe en la multilista" << endl;
         }
     }
 
-    void mostrarListaFavoritos(){
+    void mostrarListaFavoritos(const list<string>& juegoFavorito){ 
 
         cout << "La lista de juegos favoritos es: " << endl;
         for (const auto& videojuego : juegoFavorito){
             cout << videojuego << ", ";
         }
-
         cout << endl;
-
     }
 
     void ordenadosPorTitulo(Multilista<string, Videojuegos>& multilista){
@@ -550,6 +345,116 @@ class Videojuegos {
         }
 
     }
+};
 
+template <typename T, typename T2>
+class Multilista{
+private:
 
+    struct NodoP {
+        
+        T dato;
+        Multilista<T,T2>* l;
+        NodoP* nextP;
+
+        NodoP(){
+
+            nextP = nullptr;
+            l = new Multilista<T,T2>();
+        }
+
+        NodoP(T d){
+
+            dato = d;
+            nextP = nullptr;
+            l = new Multilista<T,T2>();
+        }
+
+        void print(){
+            NodoP* t = ptr;
+            while(t != nullptr){
+                cout << t->dato << " -> " << endl;
+                t -> print();
+                t = t -> nextP;
+            }
+        }
+    };
+
+    NodoP* ptr;
+    int size;
+    
+public:
+    Multilista(){
+
+        ptr = NULL;
+        size = 0;
+    }
+  
+    ~Multilista(){
+
+        NodoP* temp = ptr;
+        while (temp != nullptr){
+            NodoP* next_temp = temp -> nextP;
+            delete temp;
+            temp = next_temp;
+        }
+      
+    }
+  
+    void add(T d){
+        NodoP* n = new NodoP(d);
+
+        if (ptr == nullptr){
+            ptr =  n;
+        } else{
+            NodoP* t = ptr;
+            while(t -> nextP != nullptr){
+                t = t -> nextP;
+            }
+            t -> nextP = n;
+        }
+        size++;
+    }
+
+    void print(){
+        NodoP* t = ptr;
+        while(t != nullptr){
+            cout << t->dato << " -> " << endl;
+            t -> print();
+            t = t -> nextP;
+        }
+    }
+  
+    void insert(T dato, int pos){
+
+        NodoP* new_nodo = new NodoP(dato);
+      
+        if (ptr == nullptr || pos <= 0){
+            new_nodo -> nextP = ptr;
+            ptr = new_nodo;
+            size++;
+        } else if(pos >= size){
+            add(dato);
+        } else{
+            NodoP* t = ptr;
+            int i = 0;
+            while (i < pos-1){
+                t = t -> nextP;
+                i++;
+            }
+            new_nodo -> nextP = t -> nextP;
+            t -> nextP = new_nodo;
+            size++;
+        }  
+    }
+  
+    NodoP* get(int i){
+        NodoP* t = ptr;
+        int j = 0;
+        while (t != nullptr && j < i){
+            t = t -> nextP;
+            j++;
+        }
+        return t;
+    }  
 };
