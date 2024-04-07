@@ -82,6 +82,11 @@ int main() {
 
             case 7:
 
+            user3.mostrarMultilista();
+            break;
+
+            case 8:
+
             cout << "Los criterios por los que puede filtar y organizar los juegos son: " << endl;
             cout << "1.Ordenar por titulo" << endl;
             cout << "2.Ordenar por anio de lanzamiento" << endl;
@@ -125,7 +130,7 @@ int main() {
             break;
         }
             
-    } while (opcion != 8);
+    } while (opcion != 9);
 
     return 0;
 }

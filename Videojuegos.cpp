@@ -122,8 +122,8 @@ class Videojuegos {
         return tiempoJugadoSegundos;
     }
 
-    void agregarJuego(const Juego& juego){
-        listaJuegos.push_back(juego);
+    void agregarJuego(Juego nuevoJuego){
+        listaJuegos.push_back(nuevoJuego);
     }
 
     void agregarListaFavoritos(const string& videojuego){
@@ -135,6 +135,8 @@ class Videojuegos {
 
         return juegoFavorito;
     }
+
+    
 
     void verInfo(string juego) {
 
@@ -171,8 +173,9 @@ class Videojuegos {
         cout << "4.Agregar juegos a las categorias" << endl;
         cout << "5.Agregar un juego a la lista de favoritos" << endl;
         cout << "6.Mostrar la lista de favoritos" << endl;
-        cout << "7.Lista videojuegos por ordenamientos" << endl;
-        cout << "8.Salir" << endl;
+        cout << "7.Mostrar la multilista" << endl;
+        cout << "8.Lista videojuegos por ordenamientos" << endl;
+        cout << "9.Salir" << endl;
     }
 
     void iniciarJuego(){
@@ -254,6 +257,15 @@ class Videojuegos {
             return a.nombre < b.nombre;
         });
 
+        cout << "La lista de juegos ordenada es: " << endl;
+        for (const auto& juego : listaJuegos) {
+            cout << "Nombre: " << juego.nombre << ", Desarrollador: " << juego.desarrollador << ", Anio de lanzamiento: " << juego.anioLanzamiento << ", Plataforma: " << juego.plataforma << ", Cantidad de jugadores: " << juego.cantidadJugadores << ", Categorias: ";
+            for (const auto& categoria: juego.categoriasJuego){
+                cout << categoria << " ";
+            }
+            cout << endl;
+        }
+
     }
 
     void ordenarPorAnioLanzamiento(){
@@ -262,6 +274,16 @@ class Videojuegos {
             return a.anioLanzamiento < b.anioLanzamiento;
         });
 
+        cout << "La lista de juegos ordenada es: " << endl;
+        for (const auto& juego : listaJuegos) {
+            cout << "Nombre: " << juego.nombre << ", Desarrollador: " << juego.desarrollador << ", Anio de lanzamiento: " << juego.anioLanzamiento << ", Plataforma: " << juego.plataforma << ", Cantidad de jugadores: " << juego.cantidadJugadores << ", Categorias: ";
+            for (const auto& categoria: juego.categoriasJuego){
+                cout << categoria << " ";
+            }
+            cout << endl;
+        }
+
+
     }
 
     void ordenarPorDesarrollador(){
@@ -269,6 +291,16 @@ class Videojuegos {
         sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego& a, const Juego& b){
             return a.desarrollador < b.desarrollador;
         });
+
+        cout << "La lista de juegos ordenada es: " << endl;
+        for (const auto& juego : listaJuegos) {
+            cout << "Nombre: " << juego.nombre << ", Desarrollador: " << juego.desarrollador << ", Anio de lanzamiento: " << juego.anioLanzamiento << ", Plataforma: " << juego.plataforma << ", Cantidad de jugadores: " << juego.cantidadJugadores << ", Categorias: ";
+            for (const auto& categoria: juego.categoriasJuego){
+                cout << categoria << " ";
+            }
+            cout << endl;
+        }
+
     }
 
     void ordenarPorPlataforma(){
@@ -276,6 +308,16 @@ class Videojuegos {
         sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego&a, const Juego& b){
             return a.plataforma < b.plataforma;
         });
+
+        cout << "La lista de juegos ordenada es: " << endl;
+        for (const auto& juego : listaJuegos) {
+            cout << "Nombre: " << juego.nombre << ", Desarrollador: " << juego.desarrollador << ", Anio de lanzamiento: " << juego.anioLanzamiento << ", Plataforma: " << juego.plataforma << ", Cantidad de jugadores: " << juego.cantidadJugadores << ", Categorias: ";
+            for (const auto& categoria: juego.categoriasJuego){
+                cout << categoria << " ";
+            }
+            cout << endl;
+        }
+
     }
 
 };
@@ -407,6 +449,8 @@ public:
         cin >> categoria;
 
         add(categoria);
+
+        cout << "La categoria fue creada con exito" << endl;
     } 
 
     void agregarJuegoACategoria(){
@@ -433,6 +477,7 @@ public:
             NodoP* categoria_nodo = get(categoria);
             if (categoria_nodo != nullptr){
                 categoria_nodo -> l -> add(juego);
+                cout << "El juego se agrego correctamente a la categoria: " << categoria <<endl;
             } else {
                 cout << "El indice especificado no existe" << endl;
             }
@@ -441,5 +486,17 @@ public:
             cout << "El indice de categoria es invalido" << endl;
         }
     }
-    
+
+    void mostrarMultilista(){
+
+        NodoP* t = ptr;
+        int indice = 0;
+        while (t != nullptr){
+            cout << "Categoria " << indice << ": " << t->dato << endl;
+            cout << "Juegos en la categoria: " << endl;
+            t -> l -> print();
+            t = t -> nextP;
+            indice++;
+        }
+    }
 };
