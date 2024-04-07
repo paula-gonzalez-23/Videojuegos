@@ -115,8 +115,9 @@ class Sonar{
         {
             coordCofres.erase(remove(coordCofres.begin(), coordCofres.end(), x),
                              remove(coordCofres.begin(), coordCofres.end(), y));
+            
             tab1 [x][y] = "Ø";
-            numCofres--;
+            
             return "Has encontrado un tesoro";
         }
         else{
@@ -182,15 +183,26 @@ class Sonar{
             imprimirTablero(tab1);
             vector <int> cofres1 = cofres(numCofres);
             
-            int i = 0;
+            int i = 0, j = 0, opp;
             
             while (dispositivos > 0)
             {
                 cout << "Sondas sonar restantes: " + to_string(dispositivos) + " Cofres restantes: " + to_string(numCofres) << endl;
                 vector <int> movimiento1 = movimientos();
+                if(j == 5){
+                    cout << "Desea salir del juego? 1. Si / 2. No " << endl;
+                    cin >> opp;
+                    if (opp == 1)
+                    {
+                        cout << "Gracias por jugar" << endl;
+                        exit(0);  
+                    }
+                    
+                }
                 
                 string hacerMovimientos1 = hacerMovimientos(cofres1,movimiento1[i], movimiento1[i+1]);
-                if ( hacerMovimientos1 == "Has encontrado un tesoro"){                    
+                if ( hacerMovimientos1 == "Has encontrado un tesoro"){   
+                    numCofres -= 1;                 
                     for(int i = 0; i < movimiento1.size(); i +=2){
                         
                         hacerMovimientos(cofres1,movimiento1[i], movimiento1[i+1]);
@@ -208,6 +220,7 @@ class Sonar{
 
                 }
                 dispositivos -= 1;
+                j++;
             }
             
             if(jugarOtra() == 2){
@@ -218,3 +231,9 @@ class Sonar{
         } 
     }  
 };
+
+int main(){
+    Sonar sonar;
+    sonar.jugar();
+    return 0;
+}
