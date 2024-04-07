@@ -5,18 +5,20 @@
 #include <algorithm>
 using namespace std;
 
+//Definicion de la estructura Juego para representar informacion sobre un videojuego
 struct Juego {
+    //Campos de datos de la estructura
+    string nombre; //Nombre del juego
+    string desarrollador; //Nombre del desarrollador del juego
+    int anioLanzamiento; // Anio de lanzamiento del juego
+    string plataforma; // Plataforma en la que se puede jugar el juego
+    int cantidadJugadores; //Cantidad de jugadores que pueden participar
+    vector<string> categoriasJuego; //Categorias a las que pertenece el juego
 
-    string nombre;
-    string desarrollador;
-    int anioLanzamiento;
-    string plataforma;
-    int cantidadJugadores;
-    vector<string> categoriasJuego;
-    
+    //Constructor de la estructura Juego
     Juego(const string& nombre,const string& desarrollador, int anioLanzamiento,
     const string& plataforma, int cantidadJugadores, const vector<string>& categorias){
-
+        //Inicilaizacion de los campos de datos con los valores proporcionados como argumentos
         this -> nombre = nombre;
         this -> desarrollador = desarrollador;
         this -> anioLanzamiento = anioLanzamiento;
@@ -27,10 +29,11 @@ struct Juego {
     }
 };
 
+//Definicion de la clase Videojuegos para gestionar la informacion
 class Videojuegos {
 
     private:
-
+    //Campos de datos privados acerca del videojuego
     string nombre;
     string desarrollador;
     int anioLanzamiento;
@@ -41,17 +44,19 @@ class Videojuegos {
     int tiempoJugadoSegundos; 
     time_t startGame; //Tiempo de inicio del juego
 
-    vector<Juego> listaJuegos;
-    vector<string>juegoFavorito;
+    vector<Juego> listaJuegos;//Vector que almacena los juegos registrados
+    vector<string>juegoFavorito;//Vector que almacena los juegos favoritos
 
     
 
     public:
 
+    //Constructor
     Videojuegos(){
 
     }
 
+    //Metodos get y set
     void setnombre(string _nombre){
 
         nombre = _nombre;
@@ -137,7 +142,7 @@ class Videojuegos {
     }
 
     
-
+    //Metodo para mostrar informacion sobre un juego especifico
     void verInfo(string juego) {
 
         cout << "Nombre: " << nombre << endl;
@@ -164,6 +169,7 @@ class Videojuegos {
         }
     }
 
+    //Menu de opciones que se le muestra al usuario
     void menu(){
 
         cout << "Bienvenido a Mattel" << endl;
@@ -178,6 +184,7 @@ class Videojuegos {
         cout << "9.Salir" << endl;
     }
 
+    //Metodos para iniciar el juego y terminarlo para contabilizar el tiempo jugado
     void iniciarJuego(){
 
         startGame = time(nullptr);
@@ -193,6 +200,7 @@ class Videojuegos {
         }
     }
     
+    //Metodo para registrar un juego en el sistema
     void registrarJuego(){
 
         string nombre, desarrollador, plataforma, categoria;
@@ -220,6 +228,7 @@ class Videojuegos {
         cout << "Juego registrado correctamente" << endl;
     }
 
+    //Metodo para agregar un juego a la lista de favoritos
     void agregarAFavoritos(){
 
         string nombreJuego;
@@ -243,6 +252,7 @@ class Videojuegos {
         }
     }
 
+    //Metodo para mostrar la lista de favoritos
     void mostrarFavoritos() const{
 
         cout << "La lista de favoritos es: " << endl;
@@ -251,6 +261,7 @@ class Videojuegos {
         }
     }
 
+    //Metodo que ordena los juegos registrados alfabeticamente
     void ordenarPorTitulo(){
 
         sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego& a, const Juego&b){
@@ -268,6 +279,7 @@ class Videojuegos {
 
     }
 
+    //Metodo que ordena los juegos registrados de menor a mayor
     void ordenarPorAnioLanzamiento(){
 
         sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego& a, const Juego& b){
@@ -286,6 +298,7 @@ class Videojuegos {
 
     }
 
+    //Metodo que ordena los juegos registrados por su desarrollador alfabeticamente
     void ordenarPorDesarrollador(){
 
         sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego& a, const Juego& b){
@@ -303,6 +316,7 @@ class Videojuegos {
 
     }
 
+    //Metodo que ordena los juegos registrados por plataforma
     void ordenarPorPlataforma(){
 
         sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego&a, const Juego& b){
@@ -322,6 +336,7 @@ class Videojuegos {
 
 };
 
+//Se crea la multilista
 template <typename T, typename T2>
 class Multilista{
 private:
@@ -441,6 +456,7 @@ public:
         return t;
     } 
 
+    //Metodo que agrega una categoria a la multilista
     void agregarCategoria(){
         
         T categoria;
@@ -453,6 +469,7 @@ public:
         cout << "La categoria fue creada con exito" << endl;
     } 
 
+    //Metodo que agrega un juego a una categoria desea dentro de la multilista
     void agregarJuegoACategoria(){
 
         T2 juego;
@@ -487,6 +504,7 @@ public:
         }
     }
 
+    //Metodo que imprime la multilista
     void mostrarMultilista(){
 
         NodoP* t = ptr;
