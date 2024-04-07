@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
 
-    int opcion, opcion1;
+    int opcion, opcion1, opcion2;
 
     Videojuegos user;
     Ahorcado user1;
@@ -81,6 +81,41 @@ int main() {
             break;
 
             case 7:
+
+            cout << "Los criterios por los que puede filtar y organizar los juegos son: " << endl;
+            cout << "1.Ordenar por titulo" << endl;
+            cout << "2.Ordenar por anio de lanzamiento" << endl;
+            cout << "3.Ordenar por desarrollador" << endl;
+            cout << "4.Filtrar por plataforma" << endl;
+            cout << "Ingrese su opcion" << endl;
+            cin >> opcion2;
+
+            switch(opcion2){
+                case 1:
+
+                user.ordenarPorTitulo();
+                break;
+
+                case 2:
+
+                user.ordenarPorAnioLanzamiento();
+                break;
+
+                case 3:
+
+                user.ordenarPorDesarrollador();
+                break;
+
+                case 4:
+
+                user.ordenarPorPlataforma();
+                break;
+
+                default:
+
+                cout << "Opcion no valida" << endl;
+                break;
+            }
 
             break;
 

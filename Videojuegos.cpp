@@ -255,6 +255,29 @@ class Videojuegos {
         });
 
     }
+
+    void ordenarPorAnioLanzamiento(){
+
+        sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego& a, const Juego& b){
+            return a.anioLanzamiento < b.anioLanzamiento;
+        });
+
+    }
+
+    void ordenarPorDesarrollador(){
+
+        sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego& a, const Juego& b){
+            return a.desarrollador < b.desarrollador;
+        });
+    }
+
+    void ordenarPorPlataforma(){
+
+        sort(listaJuegos.begin(), listaJuegos.end(), [](const Juego&a, const Juego& b){
+            return a.plataforma < b.plataforma;
+        });
+    }
+
 };
 
 template <typename T, typename T2>
