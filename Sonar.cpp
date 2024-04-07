@@ -231,9 +231,3 @@ class Sonar{
         } 
     }  
 };
-
-int main(){
-    Sonar sonar;
-    sonar.jugar();
-    return 0;
-}
