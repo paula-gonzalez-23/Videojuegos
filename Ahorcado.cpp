@@ -161,16 +161,14 @@ class Ahorcado {
 
           char letra = elegirLetra();
 
-          if (palabra.find(letra) != string :: npos){
-            letrasCorrectas += letra;
+          if (letraCorrecta(letra)){
+            if(letrasCorrectas.size() == palabra.size()){
+              cout << "Haz adivinado la palabra. La palabra era: " << palabra << endl;
+              nivel = (nivel + 1) % palabrasNiveles.size();
+              break;
+            }
           } else {
-            letrasIncorrectas += letra;
-            intentosRestantes --;
-          }
-
-          if (letrasCorrectas.size() == palabra.size()){
-            cout << "¡Haz adivinado la palabra! La palabra era: " << palabra << endl;
-            break;
+            intentosRestantes--;
           }
         }
 
